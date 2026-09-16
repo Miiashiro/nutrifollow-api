@@ -10,7 +10,11 @@ routes.post('/', async(req, res) => {
         const users = await db.login(email, password)
 
         if(users.length > 0){
-            return res.status(200).json({message: "Login efetuado com sucesso"})
+            return res.status(200).json({
+                message: "Login efetuado com sucesso",
+                id: users[0].id_user,
+                name: users[0].name
+            })
         } else {
             return res.status(401).json({message: "E-mail ou senha inválidos"})
         }
