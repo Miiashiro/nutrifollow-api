@@ -5,7 +5,7 @@ const routes = express.Router()
 
 routes.get('/', async(req, res) => {
     try{
-        const result = await db.getPlan()
+        const result = await db.getPlan(req.id_user)
         return res.status(200).json(result)
     } catch(error){
         console.error(error)

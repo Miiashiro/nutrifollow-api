@@ -1,5 +1,6 @@
 import express from "express"
 import db from "../service/login.js"
+import jwt from "jsonwebtoken"
 
 const routes = express.Router()
 
@@ -10,11 +11,18 @@ routes.post('/', async(req, res) => {
         const users = await db.login(email, password)
 
         if(users.length > 0){
+            const token = jwt.sign(
+                { id: users[0].id_user},
+                process.env.JWT_SECRET,
+                { expiresIn: '12h'}
+            )
+
             return res.status(200).json({
                 message: "Login efetuado com sucesso",
-                id: users[0].id_user,
+                token,
                 name: users[0].name
             })
+
         } else {
             return res.status(401).json({message: "E-mail ou senha inválidos"})
         }
